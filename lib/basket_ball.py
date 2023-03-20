@@ -182,3 +182,100 @@ def game_dict():
             ]
         }
     }
+
+def get_player(sought_name):
+    home_players = get_team("Cleveland Cavaliers")
+    away_players = get_team("Washington Wizards")
+
+    for player in home_players.get("players"):
+        if player.get("name") == sought_name:
+            return player
+    
+    for player in away_players.get("players"):
+        if player.get("name") == sought_name:
+            return player
+    
+
+def get_team(search_team):
+    game = game_dict()
+    for team in game.values():
+        if team.get("team_name") == search_team:
+            return team
+    
+def num_points_per_game(sought_name):
+    player = get_player(sought_name)
+    return player.get("points_per_game")
+
+
+def player_age(sought_name):
+    player = get_player(sought_name)
+    return player.get("age")
+
+
+def team_colors(search_team):
+    game = game_dict()
+    for team in game.values():
+        if team.get("team_name") == search_team:
+            return team.get("colors")
+
+team_colors("a")
+
+def team_names():
+    game = game_dict()
+    team_names_list = []
+    for team in game.values():
+        team_names_list.append(team.get("team_name"))
+    return team_names_list
+
+
+def player_numbers(search_team):
+    game = game_dict()
+    p_num_list = []
+
+    for team in game.values():
+        if team.get("team_name") == search_team:
+            for player in team.get("players"):
+                p_num_list.append(player.get("number"))
+
+    return p_num_list
+
+def player_stats(search_player):
+    return get_player(search_player)
+    
+def average_rebounds_by_shoe_brand():
+    home_players = get_team("Cleveland Cavaliers")
+    away_players = get_team("Washington Wizards")
+
+    data_dict = {}
+
+    for player in home_players.get("players"):
+        brand = player.get("shoe_brand")
+        if brand in data_dict:
+            data_dict.get(f"{brand}").append(player.get("rebounds_per_game"))
+        else:
+            data_dict[brand] = []
+            data_dict.get(f"{brand}").append(player.get("rebounds_per_game"))
+    
+    for player in away_players.get("players"):
+        brand = player.get("shoe_brand")
+        if brand in data_dict:
+            data_dict.get(f"{brand}").append(player.get("rebounds_per_game"))
+        else:
+            data_dict[brand] = []
+            data_dict.get(f"{brand}").append(player.get("rebounds_per_game"))
+
+
+    for brand in data_dict:
+        i = 0
+        for num in data_dict[brand]:
+            i += num
+        average = round(i/len(data_dict[brand]), 2)
+        print(f"{brand}: ", f"{average:.2f}")
+
+average_rebounds_by_shoe_brand()
+
+print("Fuck me jogging\nNike:  4.93\nAdidas:  7.07\nPuma:  8.50\nJordan:  3.80\n")
+    
+# print(average_rebounds_by_shoe_brand())
+
+# print(num_points_per_game(game_dict()))
